@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
+// When you make separate routes folder, make mergeParams:true to be able to grab req.params correctly
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const ExpressError = require('../utils/ExpressEror');

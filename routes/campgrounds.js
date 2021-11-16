@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const Campground = require('../models/campground');
+const ExpressError = require('../utils/ExpressEror');
 const { campgroundSchema } = require('../schemas');
 
 const catchAsync = require('../utils/catchAsync');
