@@ -6,9 +6,15 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressEror');
 const methodOverride = require('method-override');
-const campgrounds = require('./routes/campgrounds');
-const reviews = require('./routes/reviews');
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user');
+
+// routes
+const campgroundRoutes = require('./routes/campgrounds');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -41,20 +47,36 @@ const sessionConfig = {
         httpOnly: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
-        // if you don't do this, people will be signed up forever
+        // set the time for session to expire after 7 days. if you don't do this, it will be signed up forever unless logout manually
     }
 }
 app.use(session(sessionConfig));
-app.use(flash())
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+// passport.session should always be used before app.use(session(sessionConfig));
+passport.use(new LocalStrategy(User.authenticate()));
+// authenticate() generates a function that is used in passport's local strategy
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+// specifying how to store it and how to unstore the pswd
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next()
+});
+
+app.get('/fakeUser', async (req, res) => {
+    const user = new User({ email: 'miran@gmail.co', username: 'miran' });
+    const newUser = await User.register(user, 'fonke');
+    res.send(newUser);
 })
 
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
+app.use('/', userRoutes);
+app.use('/campgrounds', campgroundRoutes);
+app.use('/campgrounds/:id/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
     res.render('home');
