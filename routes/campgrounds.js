@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const Campground = require('../models/campground');
-const ExpressError = require('../utils/ExpressEror');
+const ExpressError = require('../utils/ExpressError');
 const { campgroundSchema } = require('../schemas');
 const { isLoggedIn } = require('../middleware');
 
@@ -16,7 +16,6 @@ const validateCampground = (req, res, next) => {
     } else {
         next()
     }
-
 }
 
 

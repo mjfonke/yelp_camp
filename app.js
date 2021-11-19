@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
-const ExpressError = require('./utils/ExpressEror');
+const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 
 const passport = require('passport');

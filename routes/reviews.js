@@ -3,7 +3,7 @@ const router = express.Router({ mergeParams: true });
 // When you make separate routes folder, make mergeParams:true to be able to grab req.params correctly
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-const ExpressError = require('../utils/ExpressEror');
+const ExpressError = require('../utils/ExpressError');
 const { reviewSchema } = require('../schemas');
 const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn } = require('../middleware');
