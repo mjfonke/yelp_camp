@@ -63,16 +63,13 @@ passport.deserializeUser(User.deserializeUser());
 // specifying how to store it and how to unstore the pswd
 
 app.use((req, res, next) => {
+    console.log(req.session);
+    res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next()
 });
 
-app.get('/fakeUser', async (req, res) => {
-    const user = new User({ email: 'miran@gmail.co', username: 'miran' });
-    const newUser = await User.register(user, 'fonke');
-    res.send(newUser);
-})
 
 app.use('/', userRoutes);
 app.use('/campgrounds', campgroundRoutes);
