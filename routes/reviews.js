@@ -7,10 +7,10 @@ const catchAsync = require('../utils/catchAsync');
 const { isLoggedIn, validateReview, isReviewAuthor } = require('../middleware');
 
 
+router.route('/')
+    .get(reviews.renderReview)
+    .post(isLoggedIn, validateReview, catchAsync(reviews.createReview))
 
-router.get('/', reviews.renderReview);
-
-router.post('/', isLoggedIn, validateReview, catchAsync(reviews.createReview));
 
 router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(reviews.deleteReview));
 
