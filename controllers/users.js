@@ -10,7 +10,6 @@ module.exports.register = async (req, res) => {
         const { email, username, password } = req.body;
         const user = new User({ email, username });
         const registerUser = await User.register(user, password);
-        console.log(registerUser);
         // to automatically log the new users in after they register, use passport.js req.login() function
         req.login(registerUser, err => {
             if (err) return next(err);
