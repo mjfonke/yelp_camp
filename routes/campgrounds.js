@@ -9,7 +9,7 @@ const catchAsync = require('../utils/catchAsync');
 
 router.route('/')
     .get(catchAsync(campgrounds.index))
-    .post(isLoggedIn, upload.single('image'), validateCampground, catchAsync(campgrounds.createCampGround));
+    .post(isLoggedIn, upload.single('image'), validateCampground, catchAsync(campgrounds.createCampground));
 
 
 
