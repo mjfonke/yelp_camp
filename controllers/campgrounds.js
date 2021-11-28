@@ -1,4 +1,8 @@
 const Campground = require('../models/campground');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
+
 
 module.exports.index = async (req, res, next) => {
     const campgrounds = await Campground.find({});
@@ -11,16 +15,21 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createCampground = async (req, res, next) => {
-    // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
-    const campground = new Campground(req.body.campground);
-    campground.image.url = req.file.path;
-    campground.image.filename = req.file.filename;
-    campground.author = req.user._id;
-    await campground.save();
-    console.log(`NEW CAMPGROUND!! ${campground}`)
-    req.flash('success', 'Successfully made a new campground!');
-    res.redirect(`/campgrounds/${campground._id}`);
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send()
+    res.send(geoData.body.features[0].geometry.coordinates);
 
+    // if (!req.body.campground) throw new ExpressError('Invalid Campground Data', 400);
+    // const campground = new Campground(req.body.campground);
+    // campground.image.url = req.file.path;
+    // campground.image.filename = req.file.filename;
+    // campground.author = req.user._id;
+    // await campground.save();
+    // console.log(`NEW CAMPGROUND!! ${campground}`)
+    // req.flash('success', 'Successfully made a new campground!');
+    // res.redirect(`/campgrounds/${campground._id}`);
 };
 
 module.exports.showCampground = async (req, res, next) => {
@@ -56,7 +65,7 @@ module.exports.updateEditForm = async (req, res, next) => {
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground });
     campground.image.url = req.file.path;
     campground.image.filename = req.file.filename;
-    await campground.save()
+    await campground.save();
     req.flash('success', 'Successfully updated a new campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 };
