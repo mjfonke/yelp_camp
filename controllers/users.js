@@ -6,7 +6,6 @@ module.exports.renderRegister = (req, res) => {
 
 module.exports.register = async (req, res) => {
     try {
-
         const { email, username, password } = req.body;
         const user = new User({ email, username });
         const registerUser = await User.register(user, password);
@@ -16,7 +15,6 @@ module.exports.register = async (req, res) => {
             req.flash('success', 'Welcome to Yelp Camp!');
             res.redirect('/campgrounds');
         })
-
 
     } catch (e) {
         req.flash('error', e.message);
