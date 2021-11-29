@@ -10,6 +10,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -18,7 +19,7 @@ const User = require('./models/user');
 // routes
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
-const userRoutes = require('./routes/users')
+const userRoutes = require('./routes/users');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -42,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 // to parse req.body
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(mongoSanitize());
 
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
@@ -67,7 +69,7 @@ passport.deserializeUser(User.deserializeUser());
 // specifying how to store it and how to unstore the pswd
 
 app.use((req, res, next) => {
-    console.log(req.session);
+    console.log(req.query);
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');

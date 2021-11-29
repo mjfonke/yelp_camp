@@ -5,12 +5,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/home.css">
+    <title>Yelp Camp</title>
 </head>
 
-<body>
+<body class="d-flex text-center text-white bg-dark">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="mb-auto">
+            <div>
+                <h3 class="float-md-left mb-0">Yelp Camp</h3>
+                <nav class="nav nav-masthead justify-content-center float-md-right">
+                    <a href="/" class="nav-link active" aria-current="page">Home</a>
+                    <a href="/campgrounds" class="nav-link">Campgrounds</a>
+                    <% if(!currentUser) { %>
+                        <a href="/login" class="nav-link">Login</a>
+                        <a href="/register" class="nav-link">Register</a>
+                        <% } else { %>
+                            <a href="/logout" class="nav-link">Logout</a>
+                            <% } %>
+                </nav>
+            </div>
+        </header>
 
-    <h1>HOME! YELP CAMP!</h1>
+        <main class="px-3">
+            <h1>Yelp Camp</h1>
+            <p class="lead">Welcome to YelpCamp! <br>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis velit mollitia ad quam reprehenderit,
+                molestiae officiis officia ab voluptates blanditiis laborum, totam ipsum? Dignissimos, molestiae
+                praesentium. Qui accusamus id consequuntur.
+
+            </p>
+
+            <a href="/campgrounds" class="btn btn-lg btn-secondary font-weight-bold text-white">
+                Campgrounds
+            </a>
+        </main>
+
+        <footer class="mt-auto text-white-50">
+            <p>&copy; 2021 Yelp Camp</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
 
 </body>
 
